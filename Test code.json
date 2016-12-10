@@ -1,9 +1,17 @@
 {
-  "lastUpdate":1476102258,
-  "fqPData":1,
-  "fqPImage":1,
-  "fqIData":1,
-  "fqShower":10,
-  "ageData":3,
-  "autoMote":true
+  "time":1479296915,
+  "moisture":{
+    "average":23.82,
+    "point1":9.08,
+    "point2":38.57
+  },
+  "temp":{
+    "average":27.05,
+    "point1":27.3,
+    "point2":26.8
+  },
+  "light":{
+    "light_in":685.25,
+    "light_out":4957.68
+  }
 }
