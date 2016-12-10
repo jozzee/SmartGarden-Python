@@ -46,11 +46,3 @@ def readLight(addr):
     pass
   return convertToNumber(data)
  
-#def main():
-#
-#  while True:
-#    print ("Light Level : " + str(readLight()) + " lux")
-#    time.sleep(0.5)
-#  
-#if __name__=="__main__":
-#   main()
