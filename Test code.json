@@ -1,5 +1,9 @@
 {
-  "mosStd":20.00,
-  "tmpStd":40.00,
-  "ligStd":5000.00
+  "lastUpdate":1476102258,
+  "fqPData":1,
+  "fqPImage":1,
+  "fqIData":1,
+  "fqShower":10,
+  "ageData":3,
+  "autoMote":true
 }
