@@ -1,0 +1,1 @@
+[{"isRepeat": false, "isOpen": true, "working": 4, "minute": 21, "hour": 18, "daysSet": []}]

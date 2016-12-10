@@ -1,0 +1,1 @@
+{"lastTimeShower": 1479294253, "fqPData": 1, "mosStd": 20, "autoMode": false, "slatStatus": "0", "ageData": 3, "fqIData": 1, "fqPImage": 1, "fqShower": 0, "ligStd": 3563, "lastUpdate": "1479295347", "token": "dbkk8lIE0Nc:APA91bHuMaFBpRqEGuNlzfMhVI7Qebqs97ODXcHX9isDKqGaagdjusrEzTRkEDnmmciXN09Kz0H-prockMj2kXHQAAtcZo16Xla5wm84ZVjB1w2mJF1FNfCe73C04usDgLtlGBYuFVMf", "tmpStd": 40}
