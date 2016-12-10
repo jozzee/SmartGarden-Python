@@ -1,11 +1,11 @@
 import time
 import RPi.GPIO as GPIO
-import Sensors.WaterFlow as wf
-import SharedPreferences as sp
+import sensors.WaterFlow as wf
 
-statusSlat = "statusSlat"
-delay = 5
-delayWater = 10
+statusSlat = "slatStatus"
+
+delayWater = 10 
+delayShower = 5
 minPulse = 0.115
 
 GPIO.setwarnings(False)
@@ -17,13 +17,9 @@ GPIO.setup(35,GPIO.OUT)#close slat
 GPIO.setup(15,GPIO.IN)#input check status slat
 GPIO.setup(40,GPIO.OUT)#output for test slat
 
-def initSharedPreferences():
-    sp.getSharedPreferences("Memoery")
-
-initSharedPreferences()
 
 def resetGPIO():
-    print("Controls: reset GPIO")
+    print("Controls, reset GPIO")
     GPIO.output(29,False)
     GPIO.output(31,False)
     GPIO.output(33,False)
@@ -31,59 +27,52 @@ def resetGPIO():
     GPIO.output(40,False)
     
 def water():
-    print("  - Controls: water...")
+    print(" Controls, water...")
     wf.setZero()
     GPIO.output(29,True)
     time.sleep(int(delayWater))
-    print(str(wf.getFlow()))
+    #print(str(wf.getFlow()))
     GPIO.output(29,False)
     if(wf.isWaterFlows()):#wf.getFlow()>float(minPulse)
-        print("    - water on work" )  
+        print("  water flow" )  
         return True
     else:
-        print("    - water falsed!!!" )
+        print("  water error!!" )
         return False
 
 def shower():
-    print("  - Controls: shower...")
+    print("Controls, shower...")
     wf.setZero()
     GPIO.output(31,True)
-    time.sleep(delay)
+    time.sleep(int(delayShower))
     GPIO.output(31,False)
     if(wf.isWaterFlows()):#wf.getFlow()>float(minPulse)
-        print("    - water on work" )  
+        print(" water flow" )  
         return True
     else:
-        print("    - water falsed!!!" )
+        print(" water error!!" )
         return False  #False
 
+#slat status 0 is close and 1 is open
 def closeSlat():
-    print("  - Controls: closeSlat...")
-    initSharedPreferences()
-    print("slat status: "+str(sp.get(statusSlat)))
-    if(int(sp.get(statusSlat)) == int(1)):
-        GPIO.output(33,True)
-        GPIO.output(35,False)
-        time.sleep(1)
-        GPIO.output(33,False)
-        GPIO.output(35,False)
-        return True
-    else:
-        print("  -  Slat is closed")
-        return False
+    print(" Controls, closeSlat...")
+    GPIO.output(33,True)
+    GPIO.output(35,False)
+    time.sleep(1)
+    GPIO.output(33,False)
+    GPIO.output(35,False)
+    print("  slat is close success")
+    return True
+
 def openSlat():
-    print("  - Controls: openSlat...")
-    initSharedPreferences()
-    if(int(sp.get(statusSlat)) == int(2)):
-        GPIO.output(33,False)
-        GPIO.output(35,True)
-        time.sleep(1)
-        GPIO.output(33,False)
-        GPIO.output(35,False)
-        return True
-    else:
-        print("  -  Slat is opened")
-        return False
+    print(" Controls, openSlat...")
+    GPIO.output(33,False)
+    GPIO.output(35,True)
+    time.sleep(1)
+    GPIO.output(33,False)
+    GPIO.output(35,False)
+    print("  slat is open success")
+    return True
 
 
     

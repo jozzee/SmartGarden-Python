@@ -1,22 +1,22 @@
 import MySQLdb
 import json
-import SharedPreferences as sp
-import Time as tm
+import preference.SharedPreferences as sp
+import Time as t
 
 host = "localhost"
-username = "root"
-password = "ecpsmartgarden"
-database = "SmartGarden7"
-dayStorage = "dayStorage"
-dayAsTimeStamp = 86400 # 1 day = 86400 in timeStamp
+username = "<User Name of MySQL Database>"
+password = "<Password>"
+database = "<Database Name>"
 
-def initSharedPreferences():
-    sp.getSharedPreferences("Memoery")
+fqIData = "fqIData"         #frequency to insert data to database
+ageData = "ageData"         #day off store data in database
+hourStamp = 3600
+dayStamp = 86400 # 1 day = 86400 in timeStamp
 
-initSharedPreferences()
+sp.getSharedPreferences()
 
 def testConnectDB():
-    print("Database: testConnectDB")
+    print("Database, testConnectDB")
     try:
         db = MySQLdb.connect(host,username,password,database)#localhost,username,password,Database name
         cursor = db.cursor()
@@ -30,51 +30,45 @@ def testConnectDB():
         if db:
             db.close()
             print("  - Database: close connection..." +"\n")
-def insertLogData(time,action,typeA,val_before,val_after):
-    print("Database: insertLogData --> action: "+str(action)+", type: "+str(typeA))
-    initSharedPreferences()
-    lessTime = (int(time)-(int(sp.get(dayStorage))*int(dayAsTimeStamp)))
-    print("  - lessTime: "+str(tm.timeStamp2Date(lessTime)))
+
+def insertRawData(timeStamp,moisture,temp,light):
+    print("Database: insertDataList")
+    result = False
+    nextTime = 0
+    lessTime = (int(timeStamp)-(int(sp.get(ageData))*int(dayStamp)))
+
+    sql = "insert into raw_data (time,mos1,mos2,tmp1,tmp2,light_in,light_out)"\
+          "values (" +str(timeStamp) +", "+str(moisture["point1"])+", "+str(moisture["point2"]) \
+          +","+str(temp["point1"])+","+str(temp["point2"])+","+str(light["light_in"])+","+str(light["light_out"]) +");"
+
+    sql2 = "delete from raw_data where time < " +str(lessTime)+";"
+
+    #print(str(sql))
+    #print(str(sql2))
+
     try:
-        db = db = MySQLdb.connect(host,username,password,database)#localhost,username,password,Database name
+        db = db = MySQLdb.connect(host,username,password,database)
         cursor = db.cursor()
-        sql = "insert into log_data (action,type,time,val_before,val_after)"\
-              "values (" +str(action) +", "+str(typeA) +", \""+str(time)+"\", "+str(val_before) +", "+str(val_after) +");"
         cursor.execute(sql)
         db.commit()
-        sql = "delete from log_data where time < \"" +str(lessTime)+"\";"
-        cursor.execute(sql)
+        cursor.execute(sql2)
         db.commit()
+        result = True
     except MySQLdb.Error:
         print("  - Database: Error")
     finally:
         if db:
             db.close()
             print("  - Database: close connection..." +"\n")
-def insertRawData(time,moisture,temp,light):
-    print("Database: insertRawData")
-    initSharedPreferences()
-    lessTime = (int(time)-(int(sp.get(dayStorage))*int(dayAsTimeStamp)))
-    print("  - lessTime: "+str(tm.timeStamp2Date(lessTime)))
-    try:
-        db = db = MySQLdb.connect(host,username,password,database)#localhost,username,password,Database name
-        cursor = db.cursor()
-        sql = "insert into raw_data (moisture,temp,light,time)"\
-              "values (" +str(moisture) +", "+str(temp)+", "+str(light) +", \""+str(time) +"\");"
-        cursor.execute(sql)
-        db.commit()
-        sql = "delete from raw_data where time < \"" +str(lessTime)+"\";"
-        cursor.execute(sql)
-        db.commit()
-    except MySQLdb.Error:
-        print("  - Database: Error")
-    finally:
-        if db:
-            db.close()
-            print("  - Database: close connection..." +"\n")
+
+    if(result):
+        nextTime = int(timeStamp) +(int(sp.get(fqIData))*int(hourStamp))
+    return result,nextTime
+    
 def selectRawDataList():
-    print("Database: selectRawDataList")
-    result = "["
+    print("Database: selectDataList")
+    result = False
+    data = "["
     try:
         db = MySQLdb.connect(host,username,password,database)#localhost,username,password,Database name
         cursor = db.cursor()
@@ -82,13 +76,14 @@ def selectRawDataList():
         length = cursor.rowcount
         for i in range(cursor.rowcount):
             row = cursor.fetchone()
-            js = json.dumps({"time":row[0],"moisture":row[1],"temp":row[2],"light":row[3]})
+                        js = "{\"time\":"+str(row[0])+",\"mos1\":"+str(row[1])+",\"mos2\":"+str(row[2])+",\"tmp1\":"+str(row[3])+",\"tmp2\":"+str(row[4])+",\"light_in\":"+str(row[5])+",\"light_out\":"+str(row[6])+"}"
             if((i+1)==length):
                 js+="]"
             else:
                 js+=","
-            result+=js
-        #print(str(detailsList[0]))
+            data+=js
+        #print(str(data))
+        result = True
     except MySQLdb.Error:
         print("  - Database: Error" )
     finally:
@@ -96,10 +91,38 @@ def selectRawDataList():
             db.close()
             print("  - Database: close connection..." +"\n")
 
+    return result,data
+
+def insertLogData(timeStamp,working,typeA,valBefore,valAfter):
+    print(" Database: log data ( working: "+str(working) +", type: "+str(typeA) +" )")
+    result = False
+    lessTime = (int(timeStamp)-(int(sp.get(ageData))*int(dayStamp)))
+    
+    try:
+        db = db = MySQLdb.connect(host,username,password,database)#localhost,username,password,Database name
+        cursor = db.cursor()
+        sql = "insert into log_data (time,working,working_type,val_before,val_after)"\
+              "values (" +str(timeStamp) +", "+str(working) +", "+str(typeA)+", "+str(valBefore) +", "+str(valAfter) +");"
+        cursor.execute(sql)
+        db.commit()
+        sql = "delete from log_data where time < " +str(lessTime)+";"
+        cursor.execute(sql)
+        db.commit()
+        result = True
+        
+    except MySQLdb.Error:
+        print("  Database: Error")
+    finally:
+        if db:
+            db.close()
+            print("  success")
+            print("  Database: close connection..." +"\n")
     return result
+
 def selectLogDataList():
-    print("Database: selectLogData2")
-    result = "["
+    print("Database: selectHistoryList")
+    result = False
+    data = "["
     try:
         db = MySQLdb.connect(host,username,password,database)#localhost,username,password,Database name
         cursor = db.cursor()
@@ -109,18 +132,17 @@ def selectLogDataList():
         length = cursor.rowcount
         for i in range(cursor.rowcount):
             row = cursor.fetchone()
-            js = json.dumps({"time":row[0],"action":row[1],"type":row[2],"valBefore":row[3],"valAfter":row[4]})
+            js = "{\"time\":"+str(row[0])+",\"working\":"+str(row[1])+",\"type\":"+str(row[2])+",\"val_berfore\":"+str(row[3])+",\"val_after\":"+str(row[4])+"}"
             if((i+1)==length):
                 js+="]"
             else:
                 js+=","
-            result+=js
-        #print(str(detailsList[0]))
+            data+=js
+        result = True
     except MySQLdb.Error:
         print("  - Database: Error" )
     finally:
         if db:
             db.close()
             print("  - Database: close connection..." +"\n")
-    return result
-
+    return result, data

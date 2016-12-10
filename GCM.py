@@ -1,18 +1,26 @@
 from gcm import *
 import json
-import SharedPreferences as sp
+import preference.SharedPreferences as sp
+import time
 
-gcm = GCM("AIzaSyA96hbpN4glbpd8VfcZCn0Oia7jPERbDuo")
+sp.getSharedPreferences()
+gcm = GCM("<API Key Google cloud messageing>")
+
 def setData(title,message):
     return {"body" :message,"title":title,"icon" : "ic_launcher"}
 def pushNotification(data):
-    print(str(data))
-    sp.getSharedPreferences("Memoery")
-    reg_id = str(sp.get("token"))
-    print(str(reg_id))
-    gcm.plaintext_request(registration_id=reg_id,data=data)
-    print("pushNotification success")
+    print("  GCM, pushNotification")
 
-#pushNotification(setData("Smart Garden Care","Yuor have new message"))
+    reg_id = str(sp.get("token"))
+    print("    token: "+str(reg_id))
+    print("    data: "+str(data))
+    try:
+        gcm.plaintext_request(registration_id=reg_id,data=data)
+        print("    pushNotification success")
+    except:
+        print("    Opps! has error...")
+
+
+
 
     
