@@ -1,14 +1,11 @@
-{"lastUpdate": "1479295347",
- "mosStd": 20,
- "tmpStd": 40,
- "ligStd": 3563,
- "fqPData": 1,
- "fqPImage": 1,
- "fqIData": 1, 
- "ageData": 3, 
- "autoMode": false,
- "lastTimeShower": 1479294253, 
- "slatStatus": "0", 
- "fqShower": 0, 
- "token": "dbkk8lIE0Nc........."
-}
+[
+ {"time": "1479031329",
+  "mos1":41.4,
+  "mos2":11.71,
+  "tmp1":30.8,
+  "tmp2":30.6,
+  "light_in":322.5,
+  "light_out":1150.83
+ },
+ ...
+]
