@@ -1,5 +1,9 @@
-import json
-global obj
-with open('preferences.txt', 'w') as outfile:
-    json.dump(obj, outfile)
-    outfile.close
+import socket
+def isConnectInternet():
+    try:
+        host = socket.gethostbyname("www.google.com")
+        s = socket.create_connection((host, 80), 2)
+        return True
+    except:
+        pass
+    return False
