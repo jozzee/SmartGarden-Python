@@ -1,6 +1,7 @@
  public boolean isConnectInternet(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) 
-         context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected()) ? true : false;
+        ConnectivityManager connectMng = 
+         (ConnectivityManager)context
+          .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo n = connectMng.getActiveNetworkInfo();
+        return (n != null && n.isConnected()) ? true : false;
     }
