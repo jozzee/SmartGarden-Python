@@ -1,6 +1,5 @@
 import json
 global obj
-with open('preferences.txt','r') as jsonfile:
-    global obj
-    obj = json.load(jsonfile)
-    jsonfile.close
+with open('preferences.txt', 'w') as outfile:
+    json.dump(obj, outfile)
+    outfile.close
