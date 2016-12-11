@@ -1,11 +1,6 @@
-[{"time":1479296915,
-  "moisture":{
-    "average":23.82,
-    "point1":9.08,"point2":38.57},
-  "temp":{
-    "average":27.05,
-    "point1":27.3,"point2":26.8},
-  "light":{
-    "light_in":685.25,
-    "light_out":4957.68}
+[{"time":1479096783,
+  "working":4,
+  "type":1,
+  "val_berfore":5128.69,
+  "val_after":882.5
  }]
