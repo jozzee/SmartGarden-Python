@@ -13,5 +13,5 @@ for i in range(cursor.rowcount):
               list+="]"
        else:
               list+=","
-              data+=list
+       data+=list
 db.close()
