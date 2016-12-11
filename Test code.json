@@ -1,11 +1,15 @@
 [
- {"time": "1479031329",
-  "mos1":41.4,
-  "mos2":11.71,
-  "tmp1":30.8,
-  "tmp2":30.6,
-  "light_in":322.5,
-  "light_out":1150.83
+ {"time": "1479096783",
+  "working":4,
+  "type":1,
+  "val_before":5128.69,
+  "val_after":882.5,
  },
+ {"time": "1479095717",
+  "working":1,
+  "type":2,
+  "val_before":22.87,
+  "val_after":41.01,
+ }
  ...
 ]
