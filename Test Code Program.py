@@ -1,10 +1,17 @@
 import MySQLdb
-sql = "insert into raw_data"\
-       "(time,mos1,mos2,tmp1,tmp2,light_in,light_out)"\
-       "values (\"1479296915\",\"39.47\", \"42.57\","\
-       "\"29.21\",\"30.02\",\"1280.12\",\"4578.36\");"
+data = "["
 db = db = MySQLdb.connect(host,username,password,database)
 cursor = db.cursor()
-cursor.execute(sql)
-db.commit()
+cursor.execute("select * from raw_data order by time desc;")
+for i in range(cursor.rowcount):
+       row = cursor.fetchone()
+       list = "{\"time\":"+str(row[0])+",\"mos1\":"+str(row[1])+","\
+              "\"mos2\":"+str(row[2])+",\"tmp1\":"+str(row[3])+","\
+              "\"tmp2\":"+str(row[4])+",\"light_in\":"+str(row[5])+","\
+              "\"light_out\":"+str(row[6])+"}"
+       if((i+1)==cursor.rowcount):
+              list+="]"
+       else:
+              list+=","
+              data+=list
 db.close()
