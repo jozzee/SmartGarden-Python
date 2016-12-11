@@ -1,6 +1,14 @@
-[{"time":1479096783,
-  "working":4,
-  "type":1,
-  "val_berfore":5128.69,
-  "val_after":882.5
- }]
+{"lastUpdate": "1479295347",
+ "mosStd": 20,
+ "tmpStd": 40,
+ "ligStd": 3563,
+ "fqPData": 1,
+ "fqPImage": 1,
+ "fqIData": 1, 
+ "ageData": 3, 
+ "autoMode": false,
+ "lastTimeShower": 1479294253, 
+ "slatStatus": "0", 
+ "fqShower": 0, 
+ "token": "dbkk8lIE0Nc........."
+}
