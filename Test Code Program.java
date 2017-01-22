@@ -1,9 +1,5 @@
 import microgear.client as microgear
-import logging
 import time
-appid = <appid>
-gearkey = <gearkey>
-gearsecret =  <gearsecret>
 microgear.create(gearkey,gearsecret,appid,{'debugmode': True})
 def connection():
     print("Now I am connected with netpie")
