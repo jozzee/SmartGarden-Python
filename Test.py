@@ -1,5 +1,8 @@
-def get(key):
-    if(obj != None):
-        for r in obj:
-            if(key in r):
-                return obj[key]
+import datetime
+import time
+def isDay():
+    hour = datetime.datetime.now().strftime('%H')
+    if(int(hour)>6 and int(hour)<18):
+        return True
+    else:
+        return False
